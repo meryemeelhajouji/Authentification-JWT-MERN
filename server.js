@@ -1,5 +1,8 @@
 require('dotenv').config()
-const router = require('./Routes/authRoute')
+const routerAuth = require('./Routes/authRoute')
+const routerclient = require('./Routes/clientRoute')
+const routerManager = require('./Routes/managerRoute')
+
 
 
 const express = require('express')
@@ -7,7 +10,11 @@ const app = express()
 
 app.use(express.json())
 
-app.use('/api/auth',router)
+app.use('/api/auth',routerAuth)
+app.use('/api/user',routerclient)
+app.use('/api/user',routerManager)
+
+
 
 
 

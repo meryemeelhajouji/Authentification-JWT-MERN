@@ -1,27 +1,39 @@
 // method : post
-// url : api/auth/login
+// route : api/auth/login
 // acces : Public
-const Login =  (req,res) => {
-    res.status(200).send(req.body)
+const login =  (req,res) => {
+if(!req.body.text){
+    res.status(400)
+    throw new Error('entre votre text')
+}
+    res.status(200).json({message:'function login'})
 }
 
-// Re
-const Register =  (req,res) => {
-    res.status(200).send('this a register function')
+// method : post
+// route : api/auth/Register
+// acces : Public
+const register =  (req,res) => {
+    res.json('register function')
 }
-const ForgetPassword =  (req,res) => {
-    res.status(200).send('this a Forget Password function')
+// method : post
+// route : api/auth/ForgetPassword
+// acces : Public
+const forgetPassword =  (req,res) => {
+    res.json(' Forget Password function')
 }
-const ResetPassword =  (req,res) => {
+// method : post
+// route : api/auth/resetpassword/:token
+// acces : Public
+const resetPassword =  (req,res) => {
     // token = req.params.id
-    res.status(200).send('this a reset Password function of')
+    res.json(' reset Password function of')
 }
 
 
 
 module.exports = {
-    Login,
-    Register,
-    ForgetPassword,
-    ResetPassword
+    login,
+    register,
+    forgetPassword,
+    resetPassword
 }
