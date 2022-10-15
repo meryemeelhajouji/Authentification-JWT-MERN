@@ -1,3 +1,4 @@
+const User = require('../Models/user')
 // method : post
 // route : api/auth/login
 // acces : Public
@@ -13,7 +14,14 @@ if(!req.body.text){
 // route : api/auth/Register
 // acces : Public
 const register =  (req,res) => {
-    res.json('register function')
+    
+    const {body} =req
+    User.create({...body}).then(()=>{
+    res.send('created')
+    }).catch(()=>{
+        res.send('not created')
+            })
+    // res.json('register function')
 }
 // method : post
 // route : api/auth/ForgetPassword
