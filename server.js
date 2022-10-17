@@ -1,23 +1,24 @@
 require('dotenv').config()
 const mongoos = require('./Config/config')
+const express = require('express')
+const app = express()
+app.use(express.json())
 
+//router
 const routerAuth = require('./Routes/authRoute')
 const routerclient = require('./Routes/clientRoute')
 const routerManager = require('./Routes/managerRoute')
 
-
-
-const express = require('express')
-const app = express()
+//Middleware
 const {errorHandler}= require('./Middlewares/errorMiddleware')
 const {routeErrorHandler}= require('./Middlewares/routerMiddlware')
 
-app.use(express.json())
-
+//router
 app.use('/api/auth',routerAuth)
 app.use('/api/user',routerclient)
 app.use('/api/user',routerManager)
 
+//Middleware
 app.use(errorHandler)
 app.use(routeErrorHandler)
 
