@@ -5,5 +5,4 @@ const {getUserManager} = require('../Controllers/managerContriller')
 
 router.get("/manager/me",getUserManager)
 
-
 module.exports = router

@@ -22,13 +22,15 @@ password:
     },
 status:
     {
-        type:String
+        type:String,
+        default: "invalide"
     },
 token:
     {
         type:String
     },
-    
+    roleid:{type: mongoose.Schema.Types.ObjectId, ref: 'role'}
+
 
   
 })
