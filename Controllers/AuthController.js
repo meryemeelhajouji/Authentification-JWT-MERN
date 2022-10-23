@@ -5,8 +5,10 @@ const bcrypt=require('bcryptjs')
 const user = require('../Models/user')
 const jwt = require('jsonwebtoken')
 const dotenv =require('dotenv')
-const ls =require('local-storage')
+const local_storage =require('local-storage')
 const nodelailer =require('nodemailer')
+const asyncHandler = require('express-async-handler')
+
 
 
 
@@ -15,43 +17,38 @@ const nodelailer =require('nodemailer')
 // route : api/auth/login
 // acces : Public
 const login =  (req,res) => {
+const {body} =req
+// console.log(body)
+user.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
+    const user= e
+    if(e){
+        bcrypt.compare(body.password,e.password).then((e)=>{
+            if(e){
+                const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
+               
+                local_storage('token',token)
+            //    console.log('im here'+ls('token'))
+                            //   res.send(jwt.sign({payload},process.env.SECRET))
+                              res.send(local_storage('token')) 
+                            // res.redirect('/hi')
+                            
 
+            }else{
+                res.status(401).send('passsord invalid // unauthorized')
+            }
+           
+        }) .catch(()=>{
+            res.send('not hashed')
+        }) 
+      
+    }else{
+        res.status(404).send('user not found')
+    }
+})
 
-// if(!req.body.text){
-//     res.status(400)
-//     throw new Error('entre votre text')
-// }
-    res.status(200).json({message:'function login'})
-
-
-
-    // const {body} =req
-    // console.log(body)
-    // user.findOne({email:body.email}).then((e)=>{
-    //     const payload= e
-    //     if(e){
-    //         bcrypt.compare(body.password,e.password).then((e)=>{
-    //             if(e){
-    //                 const token=jwt.sign({payload},process.env.SECRET)
-    //                 ls('token',token)
-    //                 // res.redirect('/get')
-
-    //                 // res.header('token',token)
-    //                 res.send(ls('token'))
-    //             }else{
-    //                 res.status(401).send('passsord invalid // unauthorized')
-    //             }
-    //             res.send(e)
-    //         }) .catch(()=>{
-    //             res.send('not hashed')
-    //         }) 
-          
-    //     }else{
-    //         res.status(404).send('user not found')
-    //     }
-    // })
 
 }
+
 
 
 // method : post
@@ -70,7 +67,7 @@ var transporter = nodelailer.createTransport({
    });
 
 //verify email 
-//route: api/auth/verifyEemail
+//route: api/auth/verify-email/:token
 
 const verifyEmail = async (req,res) => {
     const token = req.params.token

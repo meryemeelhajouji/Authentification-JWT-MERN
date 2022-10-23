@@ -1,32 +1,35 @@
 
-// const jwt = require('jsonwebtoken')
-// const dotenv =require('dotenv')
-// const ls =require('local-storage')
+const jwt = require('jsonwebtoken')
+const dotenv =require('dotenv')
+const local_storage =require('local-storage')
 
-// function verify(access){
-//     return(req,res,next)=>{
-//         if(ls('token')){
-//             // res.send('authentificated ').status(200)
-//             if(jxt.verify(ls('token'),process.env.SECRET))
-//             {
-//                 // res.send('hi')
-//                 const token=jwt.verify(ls('token'),process.env.SECRET)
-//                 req.payload=token
-//                  if(access.includes(req.payload.payload.email)){
-//                     // res.send('hello')
-//                     next()
-                    
-//                  }else
-//                  {
-//                     res.send('anauthorised // ma halch token')
-//                  }
-//             }
-//         }else{
-//             res.send('anauthenticated // token is not her')
-//         }
-//     }
+
+function verify(){
+   
+  
+    return(req,res,next)=>{
+
+
+        if(local_storage('token')){
+       
+
+            if(jwt.verify(local_storage('token'),process.env.SECRET))
+            {
+                
+
+                
+                let  token=jwt.verify(local_storage('token'),process.env.SECRET)
+                req.user=token
+                console.log(req.user)
+               
+                    next()
+            }
+        }else{
+            res.send('anauthenticated // token is not her')
+        }
+    }
     
-// }
+}
 
-// module.exports={verify}
+module.exports={verify}
 
