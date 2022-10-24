@@ -2,10 +2,8 @@
 // url : api/user/manager/me
 // acces : private
 const getUserManager =  (req,res) => {
-    res.json("hi  manager")
+    res.json("bonjour "+req.user.user.name + " votre role est: manager")
 }
-
-
 module.exports = {
     getUserManager
 }

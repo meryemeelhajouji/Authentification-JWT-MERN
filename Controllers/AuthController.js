@@ -137,7 +137,7 @@ const forgetPassword =  (req,res) => {
                 if(err)
                   console.log(err)
                 else
-                  console.log(info);
+                  res.send(info);
              });
               
         }else{

@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const dotenv =require('dotenv')
 const local_storage =require('local-storage')
 
-
 function verify(params){   
     return(req,res,next)=>{
         if(local_storage('token')){   
