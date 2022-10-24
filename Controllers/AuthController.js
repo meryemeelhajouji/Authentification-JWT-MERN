@@ -63,8 +63,6 @@ const verifyEmail = async (req,res) => {
 } 
   
 
-
-  
  // method : post
 // route : api/auth/Register
 // acces : Public
