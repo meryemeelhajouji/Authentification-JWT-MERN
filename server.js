@@ -8,6 +8,8 @@ app.use(express.json())
 const routerAuth = require('./Routes/authRoute')
 const routerclient = require('./Routes/clientRoute')
 const routerManager = require('./Routes/managerRoute')
+const routerLivreure = require('./Routes/livreureRoute')
+
 
 //Middleware
 const {errorHandler}= require('./Middlewares/errorMiddleware')
@@ -17,6 +19,7 @@ const {routeErrorHandler}= require('./Middlewares/routerMiddlware')
 app.use('/api/auth',routerAuth)
 app.use('/api/user',routerclient)
 app.use('/api/user',routerManager)
+app.use('/api/user',routerLivreure)
 
 //Middleware
 app.use(errorHandler)

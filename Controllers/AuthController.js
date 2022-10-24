@@ -1,13 +1,11 @@
 const User = require('../Models/user')
 const Role = require('../Models/role')
 const bcrypt=require('bcryptjs')
-// const { copy } = require('../Routes/authRoute')
-// const user = require('../Models/user')
 const jwt = require('jsonwebtoken')
 const dotenv =require('dotenv')
 const local_storage =require('local-storage')
 const nodelailer =require('nodemailer')
-const asyncHandler = require('express-async-handler')
+// const asyncHandler = require('express-async-handler')
 
 
 
@@ -17,43 +15,29 @@ const asyncHandler = require('express-async-handler')
 // route : api/auth/login
 // acces : Public
 const login =  (req,res) => {
-const {body} =req
-// console.log(body)
-user.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
+const {body} = req
+User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
     const user= e
     if(e){
         bcrypt.compare(body.password,e.password).then((e)=>{
             if(e){
                 const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
-               
                 local_storage('token',token)
-            //    console.log('im here'+ls('token'))
-                            //   res.send(jwt.sign({payload},process.env.SECRET))
                               res.send(local_storage('token')) 
-                            // res.redirect('/hi')
-                            
-
+                            // res.redirect('/hi')                           
             }else{
                 res.status(401).send('passsord invalid // unauthorized')
-            }
-           
+            }           
         }) .catch(()=>{
             res.send('not hashed')
-        }) 
-      
+        })     
     }else{
         res.status(404).send('user not found')
     }
 })
-
-
 }
 
 
-
-// method : post
-// route : api/auth/Register
-// acces : Public
 
 
 
@@ -66,31 +50,29 @@ var transporter = nodelailer.createTransport({
        }
    });
 
+
+
 //verify email 
 //route: api/auth/verify-email/:token
-
 const verifyEmail = async (req,res) => {
-    const token = req.params.token
-   
+    const token = req.params.token  
     const userf= await User.findOne({token: token})
       userf.status = "valid"
      await userf.save()
-      res.send('email is valide')
-   
-
+      res.send('email is valide')  
 } 
   
 
 
   
- 
-
+ // method : post
+// route : api/auth/Register
+// acces : Public
 const register =  (req,res) => {
     const {body} = req
-    user.findOne({email:body.email}).then((e)=>{
+    User.findOne({email:body.email}).then((e)=>{
                 if(!e){
                     const token=jwt.sign({id: User._id},process.env.SECRET)
-
                     body.token  = token
                      bcrypt.hash(body.password,10).then((hashPassword)=>{
                         body.password  = hashPassword
@@ -126,13 +108,13 @@ const register =  (req,res) => {
 
 //update Password 
 //route: /api/auth/updatePassword/:token
-
 const updatePassword = async (req,res) => {
-    let  decode_token= req.params.token
-   const newPassword=  await bcrypt.hash(req.body.password,10)
-
-    let user_find= await User.findOneAndUpdate({token: decode_token},{password: newPassword})
-
+    const token = req.params.token 
+    const tokens=jwt.verify(token,process.env.SECRET)
+    const newpassword= await bcrypt.hash(req.body.password,10)
+    const userf= await User.findOneAndUpdate({_id:tokens.user._id},{'password':newpassword})
+      res.send(userf)
+   
 } 
   
  
@@ -142,7 +124,7 @@ const updatePassword = async (req,res) => {
 // acces : Public
 const forgetPassword =  (req,res) => {
     const {body} =req
-    user.findOne({email:body.email}).then((e)=>{
+    User.findOne({email:body.email}).then((e)=>{
         const user= e
         if(e){
             const token = jwt.sign({user},process.env.SECRET,{expiresIn:'30m'})
@@ -160,11 +142,9 @@ const forgetPassword =  (req,res) => {
                   console.log(info);
              });
               
-
         }else{
            res.send('user not found')
         }
-
     })
 }
 
@@ -174,7 +154,6 @@ const forgetPassword =  (req,res) => {
 // route : api/auth/resetpassword/:token
 // acces : Public
 const resetPassword =  (req,res) => {
-    // token = req.params.id
     res.json(' reset Password function of')
 }
 
