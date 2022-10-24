@@ -2,7 +2,7 @@ const User = require('../Models/user')
 const Role = require('../Models/role')
 const bcrypt=require('bcryptjs')
 // const { copy } = require('../Routes/authRoute')
-const user = require('../Models/user')
+// const user = require('../Models/user')
 const jwt = require('jsonwebtoken')
 const dotenv =require('dotenv')
 const local_storage =require('local-storage')
@@ -71,10 +71,8 @@ var transporter = nodelailer.createTransport({
 
 const verifyEmail = async (req,res) => {
     const token = req.params.token
-// console.log('hello')
    
     const userf= await User.findOne({token: token})
-//    console.log("r")
       userf.status = "valid"
      await userf.save()
       res.send('email is valide')
@@ -99,7 +97,7 @@ const register =  (req,res) => {
                         const mailOptions = {
                             from: 'meryemelhajouji.99@gmail.com', // sender address
                             to:  body.email , // list of receivers
-                            subject: 'Subject of your email', 
+                            subject: 'Verify your email', 
                             html: `<a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a>`//plain ,text body
                           };
                             User.create({...body}).then(()=>{
@@ -123,13 +121,51 @@ const register =  (req,res) => {
                     })
 
 }
+
+
+
+//update Password 
+//route: /api/auth/updatePassword/:token
+
+const updatePassword = async (req,res) => {
+    let  decode_token= req.params.token
+   const newPassword=  await bcrypt.hash(req.body.password,10)
+
+    let user_find= await User.findOneAndUpdate({token: decode_token},{password: newPassword})
+
+} 
+  
  
 
 // method : post
 // route : api/auth/ForgetPassword
 // acces : Public
 const forgetPassword =  (req,res) => {
-    res.json(' Forget Password function')
+    const {body} =req
+    user.findOne({email:body.email}).then((e)=>{
+        const user= e
+        if(e){
+            const token = jwt.sign({user},process.env.SECRET,{expiresIn:'30m'})
+            local_storage('token', token)
+            const mailOptions = {
+                from: 'meryemelhajouji.99@gmail.com', 
+                to:  body.email , 
+                subject: 'Forget Password', 
+                html: `<a href="http://${req.headers.host}/api/auth/updatePassword/${token}">update  your password </a>`
+              }
+              transporter.sendMail(mailOptions, function (err, info) {
+                if(err)
+                  console.log(err)
+                else
+                  console.log(info);
+             });
+              
+
+        }else{
+           res.send('user not found')
+        }
+
+    })
 }
 
 
@@ -149,5 +185,6 @@ module.exports = {
     register,
     forgetPassword,
     resetPassword,
-    verifyEmail
+    verifyEmail,
+    updatePassword
 }
