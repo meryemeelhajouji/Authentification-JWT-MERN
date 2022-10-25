@@ -37,10 +37,6 @@ User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>
 })
 }
 
-
-
-
-
 //mail sender details
 var transporter = nodelailer.createTransport({
     service: 'gmail',
@@ -49,7 +45,6 @@ var transporter = nodelailer.createTransport({
            pass: 'lziotdvrispagndk'
        }
    });
-
 
 
 //verify email 

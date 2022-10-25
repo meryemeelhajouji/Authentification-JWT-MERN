@@ -12,10 +12,12 @@ function verify(params){
                 req.user=token
                 if(params.includes(req.user.user.roleid.type)){                     
                     next()
+                }else{
+                    res.send('unauthenticated in this route')
                 }
             }
         }else{
-            res.send('anauthenticated // token is not her')
+            res.send('unauthenticated // token is not her')
         }
     }
     

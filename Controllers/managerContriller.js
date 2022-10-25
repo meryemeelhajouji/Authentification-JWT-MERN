@@ -3,7 +3,10 @@
 // acces : private
 const getUserManager =  (req,res) => {
     res.json("bonjour "+req.user.user.name + " votre role est: manager")
+
 }
+
+
 module.exports = {
     getUserManager
 }
