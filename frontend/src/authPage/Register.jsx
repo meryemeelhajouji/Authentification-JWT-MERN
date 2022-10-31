@@ -21,7 +21,7 @@ function Register(){
 
         const onSubmit = (e) => {
             e.preventDefault()
-            axios.post("http://localhost:5000/api/auth/registerr",formData)
+            axios.post("http://localhost:5000/api/auth/register",formData)
             .then( (response) => {
               console.log(response);
             })
