@@ -64,11 +64,17 @@ const verifyEmail = async (req,res) => {
 const register =  (req,res) => {
     const {body} = req
     User.findOne({email:body.email}).then((e)=>{
+        console.log('user=> '+e)
                 if(!e){
+                    Role.findOne({type:body.role}).then((myRole)=>{
+                        if(myRole){
+                            // console.log(myRole)
+                            // body.role =" body.role._id"
                     const token=jwt.sign({id: User._id},process.env.SECRET)
                     body.token  = token
                      bcrypt.hash(body.password,10).then((hashPassword)=>{
                         body.password  = hashPassword
+
                         const mailOptions = {
                             from: 'meryemelhajouji.99@gmail.com', // sender address
                             to:  body.email , // list of receivers
@@ -81,7 +87,7 @@ const register =  (req,res) => {
                                     if(err)
                                       console.log(err)
                                     else
-                                      console.log(info);
+                                    console.log(info);
                                  });
                             }).catch(()=>{
                                 res.send('not created // something woring ')
@@ -90,6 +96,10 @@ const register =  (req,res) => {
                       res.send('error in hash')
 
                      })
+                    }else{
+                        res.send('can not create //role not existe')
+                    }
+                        })
                 }else{
                     res.send('can not create // email déja existe')
                 }

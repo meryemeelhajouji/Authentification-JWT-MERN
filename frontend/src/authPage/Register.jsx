@@ -4,24 +4,24 @@ import  axios from 'axios'
 
 
 function Register(){
-    const [formData, setFormData] = useState({
-        name:'',
-        email:'',
-        password:'',
-        password2:''
-        })
-        const { name, email, password, password2 } = formData
+    const [user, setUser] = useState({
 
+        })
+        // const { name, email, password, password2, role } = user
+       
+
+    
         const onchange = (e) => {
-            setFormData((prevState) =>({
+            setUser((prevState) =>({
                 ...prevState,
                 [e.target.name]:e.target.value,
             }))
         }
 
         const onSubmit = (e) => {
+            console.log(user);
             e.preventDefault()
-            axios.post("http://localhost:5000/api/auth/register",formData)
+            axios.post("http://localhost:5000/api/auth/register",user)
             .then( (response) => {
               console.log(response);
             })
@@ -50,7 +50,7 @@ function Register(){
                     placeholder="Enter your name"
                     name="name"
                     id="name"
-                    value={name}
+                    // value={name}
                     onChange={onchange}
                  />
             </div>
@@ -62,7 +62,7 @@ function Register(){
                     placeholder="Enter your email"
                     name="email"
                     id="email"
-                    value={email}
+                    // value={email}
                     onChange={onchange}
                  />
             </div>
@@ -74,7 +74,7 @@ function Register(){
                     placeholder="Enter your password"
                     name="password"
                     id="password"
-                    value={password}
+                    // value={password}
                     onChange={onchange}
                  />
             </div>
@@ -86,9 +86,24 @@ function Register(){
                     placeholder="Enter your password"
                     name="password2"
                     id="password2"
-                    value={password2}
+                    // value={password2}
                     onChange={onchange}
                  />
+            </div>
+            <div className="form-group mt-3">
+                <label>Votre Role </label>
+                <select
+                    className="form-control mt-1"
+                    placeholder="Enter your password"
+                    name="role"
+                    id="role"
+                    onChange={onchange}
+                     >
+                    <option value="Client">Client</option>
+                    <option value="Livreure">Livereur</option>
+
+               
+                </select>
             </div>
             <div className="form-group d-grid gap-2 mt-3">
                 <button 
@@ -98,10 +113,8 @@ function Register(){
                 </button>
             </div>
         
-        
-      
          <p className="forgot-password text-right mt-2">
-           Forgot password?
+           Forget password?
          </p>
              </form>
        </div>
