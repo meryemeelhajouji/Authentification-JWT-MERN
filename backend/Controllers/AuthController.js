@@ -69,7 +69,7 @@ const register =  (req,res) => {
                     Role.findOne({type:body.role}).then((myRole)=>{
                         if(myRole){
                             // console.log(myRole)
-                            // body.role =" body.role._id"
+                            body.roleid = myRole._id
                     const token=jwt.sign({id: User._id},process.env.SECRET)
                     body.token  = token
                      bcrypt.hash(body.password,10).then((hashPassword)=>{
@@ -82,7 +82,7 @@ const register =  (req,res) => {
                             html: `<a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a>`//plain ,text body
                           };
                             User.create({...body}).then(()=>{
-                                res.status(201).send('created')
+                                res.status(201).send('created  ' + body.role)
                                 transporter.sendMail(mailOptions, function (err, info) {
                                     if(err)
                                       console.log(err)

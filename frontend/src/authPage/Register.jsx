@@ -1,6 +1,9 @@
 import React from "react";
 import {useState}from 'react';
-import  axios from 'axios'
+import  axios from 'axios';
+import Swal from 'sweetalert2'
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 
 function Register(){
@@ -24,15 +27,24 @@ function Register(){
             axios.post("http://localhost:5000/api/auth/register",user)
             .then( (response) => {
               console.log(response);
+              Swal.fire({
+                title: "Success",
+                text: "verify votre email pour valider votre compt",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
             })
             .catch(function (error) {
               console.log(error);
             });
         }
+     
 
 
+           
     return(
       <div>
+ 
 
       <div className="Auth-form-container  ">
      <div className="Auth-form">
