@@ -79,7 +79,9 @@ const register =  (req,res) => {
                             from: 'meryemelhajouji.99@gmail.com', // sender address
                             to:  body.email , // list of receivers
                             subject: 'Verify your email', 
-                            html: `<a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a>`//plain ,text body
+                            html: `<h1>Hello ${body.name}</h1>
+                            <p> verify your email to valide your account </p>
+                            <a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a> `//plain ,text body
                           };
                             User.create({...body}).then(()=>{
                                 res.status(201).send('created  ' + body.role)

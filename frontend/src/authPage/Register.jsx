@@ -10,10 +10,7 @@ function Register(){
     const [user, setUser] = useState({
 
         })
-        // const { name, email, password, password2, role } = user
-       
 
-    
         const onchange = (e) => {
             setUser((prevState) =>({
                 ...prevState,
@@ -44,8 +41,6 @@ function Register(){
            
     return(
       <div>
- 
-
       <div className="Auth-form-container  ">
      <div className="Auth-form">
 
@@ -125,9 +120,7 @@ function Register(){
                 </button>
             </div>
         
-         <p className="forgot-password text-right mt-2">
-           Forget password?
-         </p>
+       
              </form>
        </div>
      </div>

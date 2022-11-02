@@ -7,7 +7,7 @@ function Header(){
     return(
         <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Delivery App</Navbar.Brand>
+          <Navbar.Brand href="/">Delivery App</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -16,7 +16,7 @@ function Header(){
             
             </Nav>
             <Nav className="d-flex">
-              <Nav.Link href="/">Login</Nav.Link>
+              <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="/Register">Register</Nav.Link>
             
             </Nav>

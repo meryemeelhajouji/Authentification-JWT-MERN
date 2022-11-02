@@ -8,23 +8,28 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background: rgb(183, 181, 181);
+  background: rgb(230, 223, 223);
   background-image: url(./delivery-man-holding-cardboard-boxes-260nw-1703691970.webp);
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: cover;
+
 
 }
 
 .Auth-form {
   width: 420px;
-  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
-  padding-top: 30px;
+  box-shadow: rgba(75, 66, 66, 0.048) 1px 1px 10px;
+  padding-top: 25px;
   padding-bottom: 20px;
   border-radius: 8px;
   background-color: #F5F5F5;
+  overflow: hidden;
+  width: 600px;
 }
 
 .Auth-form-content {
+ 
+
   padding-left: 12%;
   padding-right: 12%;
 }
