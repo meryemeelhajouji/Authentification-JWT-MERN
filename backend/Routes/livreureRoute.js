@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const {verify} = require('../Middlewares/verification ')
 
-const {getUserClient} = require('../Controllers/clientController')
+const {getUserLivreure} = require('../Controllers/livreureController')
 
-router.get("/livreure/me",verify(['Livreure']), getUserClient)
+router.get("/livreure/me",verify(['Livreure']), getUserLivreure)
 
 
 module.exports = router

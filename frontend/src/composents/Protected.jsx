@@ -1,8 +1,21 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import  axios from 'axios';
 
 function Protected(){
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+
+
+axios.get(`http://localhost:5000/api/user/${role}/me`)
+
+.then(function (response) {
+console.log(response)
+})
+.catch(function (error) {
+    console.log(error)
+  
+})
 
            if(!token)
            {
@@ -10,7 +23,8 @@ const token = localStorage.getItem("token");
            }
     return(
         <div className="">
-          <center><h1>Welcom to Dashboard</h1></center>  
+  
+          <center><h1>Welcom to Dashboard {role} </h1></center>  
         </div>
     )
 }

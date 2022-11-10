@@ -23,7 +23,12 @@ User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>
             if(e){
                 const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
                 local_storage('token',token)
-                              res.send(local_storage('token')) 
+                // local_storage2('role',user.roleid.type)
+
+                              res.json({token:local_storage('token'),role:user.roleid.type}) 
+                //               res.send(local_storage2('role')) 
+
+
                             // res.redirect('/hi')                           
             }else{
                 res.status(401).send('passsord invalid // unauthorized')
@@ -33,6 +38,7 @@ User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>
         })     
     }else{
         res.status(404).send('user not found')
+        
     }
 })
 }
@@ -62,6 +68,16 @@ const verifyEmail = async (req,res) => {
 // route : api/auth/Register
 // acces : Public
 const register =  (req,res) => {
+
+
+if(!req.body.email || !req.body.name || !req.body.password){
+    res.status(400).send(" please enter email or name or password ")
+}
+if( req.body.password !=  req.body.password2){
+    res.status(400).send(" password not match")
+}
+
+
     const {body} = req
     User.findOne({email:body.email}).then((e)=>{
         console.log('user=> '+e)
@@ -84,7 +100,7 @@ const register =  (req,res) => {
                             <a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a> `//plain ,text body
                           };
                             User.create({...body}).then(()=>{
-                                res.status(201).send('created  ' + body.role)
+                                res.status(201).send('created')
                                 transporter.sendMail(mailOptions, function (err, info) {
                                     if(err)
                                       console.log(err)
@@ -92,20 +108,21 @@ const register =  (req,res) => {
                                     console.log(info);
                                  });
                             }).catch(()=>{
-                                res.send('not created // something woring ')
+                                res.status(400).send('not created // something woring ')
                             })
                      }).catch(()=>{
                       res.send('error in hash')
 
                      })
                     }else{
-                        res.send('can not create //role not existe')
+                        res.status(400).send('can not create //role not existe')
                     }
                         })
                 }else{
-                    res.send('can not create // email déja existe')
+                    res.status(400).send('can not create // email déja existe')
                 }
                     })
+                
 
 }
 

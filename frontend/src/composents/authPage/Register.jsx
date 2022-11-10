@@ -3,13 +3,13 @@ import {useState}from 'react';
 import  axios from 'axios';
 import Swal from 'sweetalert2'
 import "bootstrap/dist/css/bootstrap.min.css";
+import Alert from '../../Utils/Alert'
 
 
 
 function Register(){
-    const [user, setUser] = useState({
-
-        })
+    const [user, setUser] = useState({})
+    const [error, setError] = useState(false)
 
         const onchange = (e) => {
             setUser((prevState) =>({
@@ -19,7 +19,8 @@ function Register(){
         }
 
         const onSubmit = (e) => {
-            console.log(user);
+            setError(false)
+            // console.log(user);
             e.preventDefault()
             axios.post("http://localhost:5000/api/auth/register",user)
             .then( (response) => {
@@ -31,8 +32,10 @@ function Register(){
                 confirmButtonText: "OK",
               });
             })
-            .catch(function (error) {
-              console.log(error);
+            .catch( (error)=> {
+                setError(error.response.data)
+		console.log(error.response.data);
+            //   console.log(error);
             });
         }
      
@@ -48,6 +51,7 @@ function Register(){
          {/* <img src={logo} alt='jgjhg'className='rounded-circle w-50 h-50 ' /> */}
          <h3 className="Auth-form-title">Register</h3>
          <p className="text-center">Please create your account </p>
+         <Alert error={error} />
              <form onSubmit={onSubmit}>
              <div className="form-group mt-3">
                 <label>Name</label>

@@ -2,13 +2,14 @@ import React from "react";
 import {useState}from 'react';
 import  axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Alert from '../../Utils/Alert'
 
 function Login(){
   const navigate = useNavigate()
   const [user, setUser] = useState({
   })
   
- 
+  const [error, setError] = useState(false)
 
 
   const onchange = (e) => {
@@ -24,11 +25,16 @@ function Login(){
       axios.post("http://localhost:5000/api/auth/login",user)
       .then( (response) => {
        
-        localStorage.setItem("token", response.data)
+        localStorage.setItem("token", response.data.token) 
+        localStorage.setItem("role", response.data.role) 
+
+  
+        console.log(response.data.role)
         navigate("/Dashboard")
       })
       .catch(function (error) {
-        console.log(error);
+        setError(error.response.data.message)
+        // console.log(error);
       });
   }
 
@@ -46,6 +52,7 @@ return(
    {/* <img src={logo} alt='jgjhg'className='rounded-circle w-50 h-50 ' /> */}
    <h3 className="Auth-form-title">Login</h3>
    {/* <p className="text-center">Please create your account </p> */}
+   <Alert error={error} />
        <form onSubmit={onSubmit}>
      
       <div className="form-group mt-3">
