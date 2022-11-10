@@ -4,6 +4,7 @@ import './App.css';
 import Login from "./composents/authPage/login";
 import Home from "./composents/authPage/HomePage";
 import Register from "./composents/authPage/Register";
+import VerifyEmail from "./composents/VerifyEmail";
 import Dashboard from "./composents/Dashboard"
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Header from "./composents/Header";
@@ -21,6 +22,7 @@ function App() {
    <Route path="/" element={<Home/>}/>
    <Route path="/login" element={<Login/>}/>
    <Route path="/Register" element={<Register/>}/>
+   <Route path="/VerifyEmail/:token" element={<VerifyEmail/>}/>
    <Route 
    path="/Dashboard" 
    element=

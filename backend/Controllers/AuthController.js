@@ -58,9 +58,16 @@ var transporter = nodelailer.createTransport({
 const verifyEmail = async (req,res) => {
     const token = req.params.token  
     const userf= await User.findOne({token: token})
-      userf.status = "valid"
+    if(token==userf.token){
+          userf.status = "valid"
      await userf.save()
-      res.send('email is valide')  
+     res.json({message : "email is verified"})
+
+    }else{
+        
+        res.status(400).send("email not verified")
+    }
+    
 } 
   
 
@@ -80,7 +87,7 @@ if( req.body.password !=  req.body.password2){
 
     const {body} = req
     User.findOne({email:body.email}).then((e)=>{
-        console.log('user=> '+e)
+        // console.log('user=> '+e)
                 if(!e){
                     Role.findOne({type:body.role}).then((myRole)=>{
                         if(myRole){
@@ -97,15 +104,15 @@ if( req.body.password !=  req.body.password2){
                             subject: 'Verify your email', 
                             html: `<h1>Hello ${body.name}</h1>
                             <p> verify your email to valide your account </p>
-                            <a href="http://${req.headers.host}/api/auth/verify-email/${body.token}">verify your email </a> `//plain ,text body
+                            <a href="http://localhost:${process.env.PORT_CLIENT}/VerifyEmail/${body.token}">verify your email </a> `//plain ,text body
                           };
                             User.create({...body}).then(()=>{
                                 res.status(201).send('created')
                                 transporter.sendMail(mailOptions, function (err, info) {
                                     if(err)
-                                      console.log(err)
+                                      res.send(err)
                                     else
-                                    console.log(info);
+                                    res.json({message : "verification email is send to your email account"})
                                  });
                             }).catch(()=>{
                                 res.status(400).send('not created // something woring ')

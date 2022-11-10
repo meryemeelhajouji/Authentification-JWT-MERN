@@ -13,11 +13,11 @@ function verify(params){
                 if(params.includes(req.user.user.roleid.type)){                     
                     next()
                 }else{
-                    res.send('unauthenticated in this route')
+                    res.status(401).send('unauthenticated in this route')
                 }
             }
         }else{
-            res.send('unauthenticated // token is not her')
+                 res.status(401).send('unauthenticated // token is not her')
         }
     }
     
