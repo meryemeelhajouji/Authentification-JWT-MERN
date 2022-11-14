@@ -1,7 +1,9 @@
 require('dotenv').config()
 const mongoos = require('./Config/config')
 const express = require('express')
+const cors = require('cors');
 const app = express()
+app.use(cors());
 app.use(express.json())
 
 //router
@@ -20,6 +22,8 @@ app.use('/api/auth',routerAuth)
 app.use('/api/user',routerclient)
 app.use('/api/user',routerManager)
 app.use('/api/user',routerLivreure)
+
+
 
 //Middleware
 app.use(errorHandler)
