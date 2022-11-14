@@ -1,17 +1,23 @@
 import React from "react";
 import {useState}from 'react';
 import  axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate,Navigate } from "react-router-dom";
 import Alert from '../../Utils/Alert'
 
 function Login(){
+const token = localStorage.getItem("token");
+
+   
   const navigate = useNavigate()
   const [user, setUser] = useState({
   })
   
   const [error, setError] = useState(false)
 
-
+  if(token)
+  {
+   return<Navigate to ="/Dashboard" />
+  }
   const onchange = (e) => {
       setUser((prevState) =>({
           ...prevState,
@@ -20,21 +26,24 @@ function Login(){
   }
 
   const onSubmit = (e) => {
-      console.log(user);
+      // console.log(user);
+      setError(false)
       e.preventDefault()
       axios.post("http://localhost:5000/api/auth/login",user)
       .then( (response) => {
        
         localStorage.setItem("token", response.data.token) 
         localStorage.setItem("role", response.data.role) 
+        localStorage.setItem("user", response.data.name) 
+
 
   
-        console.log(response.data.role)
+        // console.log(response.data.name)
         navigate("/Dashboard")
       })
       .catch(function (error) {
-        setError(error.response.data.message)
-        // console.log(error);
+        setError(error.response.data)
+        console.log(error.response.data);
       });
   }
 
@@ -89,9 +98,13 @@ return(
           </button>
       </div>
   
-   <p className="forgot-password text-right mt-2">
-     Forget password?
-   </p>
+   
+   <p className="mb-2 text-sm mx-auto">  
+       <Link to="/forgetPassword" className="text-primary text-gradient font-weight-bold">Forget password?</Link>
+    </p>
+   <p className="mb-2 text-sm mx-auto">dont have an account?
+       <Link to="/register" className="text-primary text-gradient font-weight-bold">Register</Link>
+    </p>
        </form>
  </div>
 </div>

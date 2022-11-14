@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 
-function VerifyEmail() {
+function VerifyEmailforgPass() {
 
   
     const api = axios.create({
@@ -14,7 +14,7 @@ function VerifyEmail() {
     console.log(token);
 
     
-    api.get(`auth/verify-email/${token}`)
+    api.get(`auth/updatePassword/${token}`)
     .then((response)=>{
         console.log(response.data);
         Swal.fire({
@@ -39,4 +39,4 @@ function VerifyEmail() {
   )
 }
 
-export default VerifyEmail
+export default VerifyEmailforgPass

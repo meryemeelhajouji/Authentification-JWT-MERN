@@ -5,7 +5,7 @@ function Dashboard(){
            
     return(
         <div className="">
-          <center><h1>Welcom to Dashboard</h1></center>  
+          {/* <center><h1>Welcom to Dashboard</h1></center>   */}
         </div>
     )
 }

@@ -15,21 +15,26 @@ const nodelailer =require('nodemailer')
 // route : api/auth/login
 // acces : Public
 const login =  (req,res) => {
+    
+if(!req.body.email || !req.body.password){
+    res.status(400).send(" please enter email or name or password ")
+    
+}
 const {body} = req
 User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
     const user= e
     if(e){
         bcrypt.compare(body.password,e.password).then((e)=>{
             if(e){
-                const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
+                if(user.status=="valid"){
+                       const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
                 local_storage('token',token)
-                // local_storage2('role',user.roleid.type)
-
-                              res.json({token:local_storage('token'),role:user.roleid.type}) 
-                //               res.send(local_storage2('role')) 
-
-
-                            // res.redirect('/hi')                           
+                res.json({token:local_storage('token'),role:user.roleid.type,name:user.name}) 
+                       
+                }else{
+                    res.status(401).send('please verify your email')
+                }
+                              
             }else{
                 res.status(401).send('passsord invalid // unauthorized')
             }           
@@ -103,7 +108,7 @@ if( req.body.password !=  req.body.password2){
                             to:  body.email , // list of receivers
                             subject: 'Verify your email', 
                             html: `<h1>Hello ${body.name}</h1>
-                            <p> verify your email to valide your account </p>
+                            <p> Click for lien for reset your password </p>
                             <a href="http://localhost:${process.env.PORT_CLIENT}/VerifyEmail/${body.token}">verify your email </a> `//plain ,text body
                           };
                             User.create({...body}).then(()=>{
@@ -152,6 +157,9 @@ const updatePassword = async (req,res) => {
 // route : api/auth/ForgetPassword
 // acces : Public
 const forgetPassword =  (req,res) => {
+    if(!req.body.email) {
+        res.status(400).send(" please enter email ")
+    }
     const {body} =req
     User.findOne({email:body.email}).then((e)=>{
         const user= e
@@ -162,7 +170,7 @@ const forgetPassword =  (req,res) => {
                 from: 'meryemelhajouji.99@gmail.com', 
                 to:  body.email , 
                 subject: 'Forget Password', 
-                html: `<a href="http://${req.headers.host}/api/auth/updatePassword/${token}">update  your password </a>`
+                html: `<a href="http://localhost:${process.env.PORT_CLIENT}/VerifyEmailforgPass/${body.token}">update  your password </a>`
               }
               transporter.sendMail(mailOptions, function (err, info) {
                 if(err)
@@ -186,7 +194,15 @@ const resetPassword =  (req,res) => {
     res.json(' reset Password function of')
 }
 
+// method  : get
+// url     : api/auth/logout
+// acces   : Public
+const Logout = async(req,res)=>{
+    // res.clearCookie('token');
+    localStorage.clear();
+    res.send('Logout');
 
+}
 
 module.exports = {
     login,
@@ -194,5 +210,6 @@ module.exports = {
     forgetPassword,
     resetPassword,
     verifyEmail,
-    updatePassword
+    updatePassword,
+    Logout
 }

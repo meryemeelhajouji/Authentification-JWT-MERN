@@ -30,8 +30,8 @@ function Register(){
                 text: "verify votre email pour valider votre compt",
                 icon: "success",
                 confirmButtonText: "OK",
-              });
-            })
+               });
+             })
             .catch( (error)=> {
                 setError(error.response.data)
 		console.log(error.response.data);
