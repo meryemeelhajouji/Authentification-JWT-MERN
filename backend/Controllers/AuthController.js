@@ -5,47 +5,38 @@ const jwt = require('jsonwebtoken')
 const dotenv =require('dotenv')
 const local_storage =require('local-storage')
 const nodelailer =require('nodemailer')
-// const asyncHandler = require('express-async-handler')
-
-
-
 
 
 // method : post
 // route : api/auth/login
 // acces : Public
-const login =  (req,res) => {
-    
-if(!req.body.email || !req.body.password){
-    res.status(400).send(" please enter email or name or password ")
-    
-}
-const {body} = req
-User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
-    const user= e
-    if(e){
-        bcrypt.compare(body.password,e.password).then((e)=>{
+const login =  (req,res) => {   
+        if(!req.body.email || !req.body.password){
+            res.status(400).send(" please enter email or name or password ")            
+        }
+        const {body} = req
+        User.findOne({email:body.email}).populate({path:'roleid',model:Role}).then((e)=>{
+            const user= e
             if(e){
-                if(user.status=="valid"){
-                       const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
-                local_storage('token',token)
-                res.json({token:local_storage('token'),role:user.roleid.type,name:user.name}) 
-                       
-                }else{
-                    res.status(401).send('please verify your email')
-                }
-                              
+                bcrypt.compare(body.password,e.password).then((e)=>{
+                    if(e){
+                        if(user.status=="valid"){
+                            const token = jwt.sign({user},process.env.SECRET,{expiresIn:'120m'})
+                        local_storage('token',token)
+                        res.json({token:local_storage('token'),role:user.roleid.type,name:user.name})                           
+                        }else{
+                            res.status(401).send('please verify your email')
+                        }                                  
+                    }else{
+                        res.status(401).send('passsord invalid // unauthorized')
+                    }           
+                }) .catch(()=>{
+                    res.send('not hashed')
+                })     
             }else{
-                res.status(401).send('passsord invalid // unauthorized')
-            }           
-        }) .catch(()=>{
-            res.send('not hashed')
-        })     
-    }else{
-        res.status(404).send('user not found')
-        
-    }
-})
+                res.status(404).send('user not found')    
+            }
+        })
 }
 
 //mail sender details

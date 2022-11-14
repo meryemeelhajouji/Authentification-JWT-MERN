@@ -23,22 +23,18 @@ function Header(){
               <Nav.Link href="#home"></Nav.Link>
             </Nav> */} 
           <Nav className="d-flex">
-            
-                
-
                   { localStorage.getItem("user")?
-                  <Dropdown>
-                         <Dropdown.Toggle variant="with" id="dropdown-basic"> { localStorage.getItem("user")} </Dropdown.Toggle>
-                         <Dropdown.Menu>
-                         <Dropdown.Item onClick={logOut}>log out</Dropdown.Item>
-                         <Dropdown.Item  href="/profile" > Profile</Dropdown.Item>
-
-                         </Dropdown.Menu>
-                   </Dropdown>
-                   :<Nav>
-                      <Nav.Link href="/login">Login</Nav.Link>
-                       <Nav.Link href="/Register">Register</Nav.Link>
-                   </Nav>
+                    <Dropdown>
+                          <Dropdown.Toggle variant="with" id="dropdown-basic"> { localStorage.getItem("user")} </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                          <Dropdown.Item  href="/profile" > Profile</Dropdown.Item>
+                          <Dropdown.Item onClick={logOut}>log out</Dropdown.Item>
+                          </Dropdown.Menu>
+                    </Dropdown>
+                  : <Nav>
+                        <Nav.Link href="/login">Login</Nav.Link>
+                        <Nav.Link href="/Register">Register</Nav.Link>
+                    </Nav>
 
                   }
           </Nav>
