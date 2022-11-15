@@ -38,17 +38,13 @@ function Register(){
             //   console.log(error);
             });
         }
-     
-
-
-           
+       
     return(
       <div>
-      <div className="Auth-form-container  ">
+      <div className="Auth-form-container">
      <div className="Auth-form">
 
        <div className="Auth-form-content">
-         {/* <img src={logo} alt='jgjhg'className='rounded-circle w-50 h-50 ' /> */}
          <h3 className="Auth-form-title">Register</h3>
          <p className="text-center">Please create your account </p>
          <Alert error={error} />

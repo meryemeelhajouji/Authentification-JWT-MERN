@@ -134,11 +134,7 @@ if( req.body.password !=  req.body.password2){
 //update Password 
 //route: /api/auth/updatePassword/:token
 const updatePassword = async (req,res) => {
-    const token = req.params.token 
-    const tokens=jwt.verify(token,process.env.SECRET)
-    const newpassword= await bcrypt.hash(req.body.password,10)
-    const userf= await User.findOneAndUpdate({_id:tokens.user._id},{'password':newpassword})
-      res.send(userf)
+   
    
 } 
   
@@ -156,6 +152,7 @@ const forgetPassword =  (req,res) => {
         const user= e
         if(e){
             const token = jwt.sign({user},process.env.SECRET,{expiresIn:'30m'})
+            body.token  = token
             local_storage('token', token)
             const mailOptions = {
                 from: 'meryemelhajouji.99@gmail.com', 
@@ -182,7 +179,11 @@ const forgetPassword =  (req,res) => {
 // route : api/auth/resetpassword/:token
 // acces : Public
 const resetPassword =  (req,res) => {
-    res.json(' reset Password function of')
+    const token = req.params.token 
+    const tokens=jwt.verify(token,process.env.SECRET)
+    const newpassword= bcrypt.hash(req.body.password,10)
+    const userf = User.findOneAndUpdate({_id:tokens.user._id},{'password':newpassword})
+      res.send("password is update")
 }
 
 // method  : get

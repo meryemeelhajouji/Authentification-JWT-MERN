@@ -1,10 +1,10 @@
-import React from 'react'
-import {useParams} from 'react-router-dom';
+import React, {useState} from 'react'
+import {useParams, Navigate} from 'react-router-dom';
 import axios from 'axios';
-import Swal from 'sweetalert2'
 
 function VerifyEmailforgPass() {
 
+  const [verifyEmail, setVerifyEmail] = useState({})
   
     const api = axios.create({
 		baseURL: "http://localhost:5000/api/"
@@ -14,27 +14,19 @@ function VerifyEmailforgPass() {
     console.log(token);
 
     
-    api.get(`auth/updatePassword/${token}`)
+    api.get(`auth/verify-email/${token}`)
     .then((response)=>{
         console.log(response.data);
-        Swal.fire({
-            title: "Success",
-            text: "Email Is verified Successfuly",
-            icon: "success",
-            footer: '<a href="/login">login</a>'
-          });
+        setVerifyEmail(true)
     }).catch((error)=>{
         console.log(error.response.data);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Email Not Verified!'
-          });
+      
     })
 
 
   return (
     <div>
+       {verifyEmail &&  <Navigate to={'/newPassword/'+token} replace={true} />}
     </div>
   )
 }
