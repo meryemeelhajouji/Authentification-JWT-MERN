@@ -1,7 +1,7 @@
 import React from "react";
 import {useState}from 'react';
 import  axios from 'axios';
-// import Alert from '../../Utils/Alert'
+import Alert from '../../Utils/Alert'
 import Swal from 'sweetalert2'
 
 function NewPassword(){
@@ -10,8 +10,8 @@ function NewPassword(){
 
 
   const onchange = (e) => {
-      setUser((prevState) =>({
-          ...prevState,
+      setUser(() =>({
+          ...user,
           [e.target.name]:e.target.value,
       }))
   }
@@ -46,7 +46,7 @@ return(
 
  <div className="Auth-form-content">
    <h3 className="Auth-form-title">Reset password</h3>
-   {/* <Alert error={error} /> */}
+   <Alert error={error} />
        <form onSubmit={onSubmit}>
      
        <div className="form-group mt-3">

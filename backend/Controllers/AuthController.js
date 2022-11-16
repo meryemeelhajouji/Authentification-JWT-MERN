@@ -115,6 +115,7 @@ if( req.body.password !=  req.body.password2){
                             })
                      }).catch(()=>{
                       res.send('error in hash')
+                      
 
                      })
                     }else{

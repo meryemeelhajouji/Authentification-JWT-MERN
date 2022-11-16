@@ -5,28 +5,23 @@ import {Link, useNavigate,Navigate } from "react-router-dom";
 import Alert from '../../Utils/Alert'
 
 function Login(){
-const token = localStorage.getItem("token");
-
-   
+  const token = localStorage.getItem("token");
   const navigate = useNavigate()
-  const [user, setUser] = useState({
-  })
-  
+  const [user, setUser] = useState({})
   const [error, setError] = useState(false)
 
   if(token)
   {
    return<Navigate to ="/Dashboard" />
   }
-  const onchange = (e) => {
-      setUser((prevState) =>({
-          ...prevState,
-          [e.target.name]:e.target.value,
-      }))
-  }
+    const onchange = (e) => {
+        setUser(() =>({
+            ...user,
+            [e.target.name]:e.target.value,
+        }))
+    }
 
   const onSubmit = (e) => {
-      // console.log(user);
       setError(false)
       e.preventDefault()
       axios.post("http://localhost:5000/api/auth/login",user)
@@ -35,10 +30,6 @@ const token = localStorage.getItem("token");
         localStorage.setItem("token", response.data.token) 
         localStorage.setItem("role", response.data.role) 
         localStorage.setItem("user", response.data.name) 
-
-
-  
-        // console.log(response.data.name)
         navigate("/Dashboard")
       })
       .catch(function (error) {
@@ -58,12 +49,9 @@ return(
 <div className="Auth-form">
 
  <div className="Auth-form-content">
-   {/* <img src={logo} alt='jgjhg'className='rounded-circle w-50 h-50 ' /> */}
    <h3 className="Auth-form-title">Login</h3>
-   {/* <p className="text-center">Please create your account </p> */}
    <Alert error={error} />
        <form onSubmit={onSubmit}>
-     
       <div className="form-group mt-3">
           <label>Email</label>
           <input
@@ -72,7 +60,6 @@ return(
               placeholder="Enter your email"
               name="email"
               id="email"
-              // value={email}
               onChange={onchange}
            />
       </div>
@@ -84,7 +71,6 @@ return(
               placeholder="Enter your password"
               name="password"
               id="password"
-              // value={password}
               onChange={onchange}
            />
       </div>

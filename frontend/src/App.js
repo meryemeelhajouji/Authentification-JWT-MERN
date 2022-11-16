@@ -8,11 +8,11 @@ import VerifyEmail from "./composents/VerifyEmail";
 import ForgetPassword from "./composents/authPage/ForgetPassword";
 import VerifyEmailforgPass from "./composents/VerifyEmailforgPass";
 import Dashboard from "./composents/authPage/Dashboard";
-import Profile from "./composents/Profile";
+import Profile from "./composents/users/Profile";
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import Header from "./composents/Header";
+import Header from "./composents/layout/Header";
 import ProtectRoute from "./Utils/ProtectRoute"
-import NewPassword from "./composents/NewPassword"
+import NewPassword from "./composents/authPage/NewPassword"
 
 
 
@@ -21,6 +21,7 @@ function App() {
   
   <Router>
   <div className="">
+    
     <Header/>
      
    <Routes>

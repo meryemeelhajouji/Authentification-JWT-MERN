@@ -12,8 +12,8 @@ function Register(){
     const [error, setError] = useState(false)
 
         const onchange = (e) => {
-            setUser((prevState) =>({
-                ...prevState,
+            setUser(() =>({
+                ...user,
                 [e.target.name]:e.target.value,
             }))
         }
