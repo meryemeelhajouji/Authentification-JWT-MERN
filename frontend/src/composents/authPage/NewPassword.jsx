@@ -1,5 +1,6 @@
 import React from "react";
 import {useState}from 'react';
+import {useParams} from 'react-router-dom';
 import  axios from 'axios';
 import Alert from '../../Utils/Alert'
 import Swal from 'sweetalert2'
@@ -8,6 +9,7 @@ function NewPassword(){
   const [user, setUser] = useState({})
   const [error, setError] = useState(false)
 
+  const { token } = useParams();
 
   const onchange = (e) => {
       setUser(() =>({
@@ -19,9 +21,9 @@ function NewPassword(){
   const onSubmit = (e) => {
       setError(false)
       e.preventDefault()
-      axios.post("http://localhost:5000/api/auth/resetPassword",user)
+      axios.post(`http://localhost:5000/api/auth/resetpassword/${token}`)
       .then( (response) => {
-        console.log(response)
+        console.log(response.data)
          Swal.fire({
                 title: "Success",
                 text: "password is change",

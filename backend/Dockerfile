@@ -1,0 +1,10 @@
+FROM node:16
+EXPOSE 5000
+COPY . ./app
+WORKDIR /app
+RUN npm install nodemon
+ENV NODE_ENV = NODE_ENV
+ENV DB_CON_STR=MONG_URL
+ENV SERVER_PORT=PORT
+ENV JWT_SECRET=SECRET
+CMD ["node", "server.js"]

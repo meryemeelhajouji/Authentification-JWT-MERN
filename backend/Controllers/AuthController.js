@@ -159,7 +159,7 @@ const forgetPassword =  (req,res) => {
                 from: 'meryemelhajouji.99@gmail.com', 
                 to:  body.email , 
                 subject: 'Forget Password', 
-                html: `<a href="http://localhost:${process.env.PORT_CLIENT}/VerifyEmailforgPass/${body.token}">update  your password </a>`
+                html: `<a href="http://localhost:${process.env.PORT_CLIENT}/newPassword/${body.token}">update  your password </a>`
               }
               transporter.sendMail(mailOptions, function (err, info) {
                 if(err)
@@ -179,23 +179,23 @@ const forgetPassword =  (req,res) => {
 // method : post
 // route : api/auth/resetpassword/:token
 // acces : Public
-const resetPassword =  (req,res) => {
+const resetPassword = async (req,res) => {
     const token = req.params.token 
     const tokens=jwt.verify(token,process.env.SECRET)
     const newpassword= bcrypt.hash(req.body.password,10)
-    const userf = User.findOneAndUpdate({_id:tokens.user._id},{'password':newpassword})
-      res.send("password is update")
+    const user= await User.findOne({_id:tokens.user._id})
+    if(tokens==user.token){
+          user.password = newpassword
+     await userf.save()
+     res.status(400).send("password is update")
+     console.log("update")
+
+    }else{
+        
+        res.status(400).send("password not update")
+    }
 }
 
-// method  : get
-// url     : api/auth/logout
-// acces   : Public
-const Logout = async(req,res)=>{
-    // res.clearCookie('token');
-    localStorage.clear();
-    res.send('Logout');
-
-}
 
 module.exports = {
     login,
@@ -203,6 +203,5 @@ module.exports = {
     forgetPassword,
     resetPassword,
     verifyEmail,
-    updatePassword,
-    Logout
+    updatePassword
 }

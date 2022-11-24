@@ -16,10 +16,10 @@ function VerifyEmailforgPass(req, res) {
     
     api.get(`auth/verify-email/${token}`)
     .then((response)=>{
-        res.send(response.data);
+      console.log(response.data)
         setVerifyEmail(true)
     }).catch((error)=>{
-       res.send(error.response.data);
+     console.log(error.response.data)
       
     })
 

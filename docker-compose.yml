@@ -1,0 +1,34 @@
+version: '3.1'
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27018:27017
+    networks:
+      - livraison-marhaba-net
+
+  backend:
+    container_name: docker_backend
+    image: docker_backend
+    ports:
+      - "5000:5000"
+    build: ./backend
+    networks:
+      - livraison-marhaba-net
+    depends_on:
+      - mongodb
+
+  frontend:
+    container_name: docker_frontend
+    image: docker_frontend
+    ports:
+      - "3000:3000"
+    build: ./frontend
+    depends_on:
+      - backend 
+    networks:
+      - livraison-marhaba-net
+networks:
+  livraison-marhaba-net:
+    driver: bridge 
